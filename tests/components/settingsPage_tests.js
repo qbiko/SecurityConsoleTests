@@ -2,7 +2,9 @@ var assert = require('assert'),
 test = require('selenium-webdriver/testing'),
 webdriver = require('selenium-webdriver');
 var utcPage = require('../lib/utcPage.js');
+import { mount } from 'enzyme';
 import { expect } from 'chai';
+var link = 'http://10.0.100.171:8082/#/settings/system';
 var driver;
 
 var passwordBtn = webdriver.By.xpath('//a[contains(@title, "Passwords")]');
@@ -22,7 +24,7 @@ test.before(function() {
     page.visit();
     driver.sleep(1000);
     driver.getCurrentUrl().then(function(url) {
-      if(url != (page.url +'/#/')) {
+      if(url != 'http://10.0.100.171:8082/#/') {
         driver.sleep(1000);
         driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li')).click();
         driver.sleep(1000);

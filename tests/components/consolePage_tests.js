@@ -21,7 +21,7 @@ test.describe('Test Konsoli Bezpieczenstwa', function(){
 	    page.visit();
       driver.sleep(1000);
       driver.getCurrentUrl().then(function(url) {
-        if(url =! (page.url +'/#/')) {
+        if(url == 'http://10.0.100.171:8082/#/console') {
           driver.sleep(1000);
           driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li')).click();
           driver.sleep(1000);
