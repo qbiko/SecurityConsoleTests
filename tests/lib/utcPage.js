@@ -67,11 +67,11 @@ utcPage.prototype.logout = function() {
     this.clickIn(this.logoutButton);
 }
 
-utcPage.prototype.logIn = function(login, password, IDInformator, IDJezyk) {
+utcPage.prototype.logIn = function(login, password, IDInformator, IDLang) {
     this.setText(this.loginInput, login);
     this.setText(this.passwordInput, password);
     this.chooseInformator(IDInformator); //UX USERS TEST 12, PLATFORM 11
-    this.chooseLanguage(IDJezyk); //PL 16 ENG 2
+    this.chooseLanguage(IDLang); //PL 16 ENG 2
     this.clickIn(this.logInButton);
 }
 

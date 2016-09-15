@@ -12,16 +12,12 @@ test.before(function() {
     driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.edge()).build();
     var page = new utcPage(driver);
     this.timeout(TimeOut);
-    driver.sleep(3000);
     page.visit();
-    driver.sleep(1000);
+    page.waitToElement(webdriver.By.id('app'));
     driver.getCurrentUrl().then(function(url) {
       if(url != 'http://10.0.100.171:8082/#/') {
-        driver.sleep(1000);
         driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li')).click();
-        driver.sleep(1000);
         driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li/ul/li[4]')).click();
-        driver.sleep(1000);
       }
     });
 });
@@ -33,7 +29,7 @@ test.describe('Strona logowania', function() {
       this.timeout(TimeOut);
 			var page = new utcPage(driver);
 	    page.visit();
-      driver.sleep(3000);
+      page.waitToElement(page.loginInput);
       page.logIn('marcin', 'changeme', 11, 16);
       page.waitToElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/div/section/div[2]'));
       driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/div/section/div[2]')).isEnabled(); //obczaic pozniej
@@ -42,7 +38,7 @@ test.describe('Strona logowania', function() {
     test.it('zbadaj czy w local storage sa odpowiednie wartosci jezyka i informatora', function() {
 			var page = new utcPage(driver);
 	    page.visit();
-      driver.sleep(1000);
+      page.waitToElement(page.loginInput);
       page.fillForm('Jakub', 'Chodorowski', 12, 16);
 
       page.checkLocalStorage('locale').then(function(value) {
@@ -58,6 +54,7 @@ test.describe('Strona logowania', function() {
 		test.it('zbadaj czy mozna wyczyscic formularz oraz czy pojawia sie komunikat o obowiazku wypelnienia pol', function() {
       var page = new utcPage(driver);
 	    page.visit();
+      page.waitToElement(page.loginInput);
       page.fillForm('Jakub', 'Chodorowski', 12, 16);
 
       page.cleanUsername();
@@ -83,7 +80,7 @@ test.describe('Strona logowania', function() {
     test.it('zbadaj czy w input przesuwa sie do gory i ma kolor czerwony', function() {
       var page = new utcPage(driver);
       page.visit();
-
+      page.waitToElement(page.loginInput);
       page.fillForm('Jakub', 'Chodorowski', 12, 16);
 
       page.cleanUsername();
@@ -114,9 +111,9 @@ test.describe('Strona logowania', function() {
   test.it('czy w przypadku pustego pola username i password, dostajemy informacje ze pole jest wymagane ?', function() {
     var page = new utcPage(driver);
     page.visit();
-    driver.sleep(1000);
+    page.waitToElement(page.loginInput);
     page.clickIn(page.logInButton);
-    driver.sleep(1000);
+    page.waitToElement(webdriver.By.xpath('//div[contains(@class,"is-invalid")]/span[contains(@class, "validation-message")]'));
     page.getUserData('//div[contains(@class,"is-invalid")]/span[contains(@class, "validation-message")]').then(function(text){
       assert.equal(text, 'This field is required')
     });
@@ -124,9 +121,8 @@ test.describe('Strona logowania', function() {
 
   test.it('czy po uzupelnieniu username , password nadal jest wymagany ?', function(){
    var page = new utcPage(driver);
-   driver.sleep(1000);
    page.setText(page.loginInput, 'Sebastian');
-   driver.sleep(1000);
+
    page.getUserData('//section/div[3]/form/div[2]/span[contains(@class, "validation-message")]').then(function(text){
      assert.equal(text, 'This field is required')//*[@id="app"]/section/div/div/div/div/section/div[3]/form/div[2]/span[3]
    });
@@ -148,11 +144,9 @@ test.describe('Strona logowania', function() {
  test.it('czy panel z Directory i Language zostaje ukryty po jego kliknieciu', function(){
    var page = new utcPage(driver);
    page.clickIn(page.moreOptions);
-   driver.sleep(1000);
    page.getElement(page.optionsPanel).getAttribute('aria-hidden').then(function(text){
      assert.equal(text, 'true')
    })
-   driver.sleep(1000)
    page.clickIn(page.moreOptions);
  });
  test.it('klikniecie zmiany jezyka i sprawdzenie czy placeholdery zmienily jezyk w formularzu', function(){
@@ -173,7 +167,6 @@ test.describe('Strona logowania', function() {
 
    page.chooseLanguage(2); //wybieram English
 
-   driver.sleep(1000);
 
    page.getTxt(page.usernameLabel).then(function(text) {
      assert.notEqual(text, usernameLabelOld)

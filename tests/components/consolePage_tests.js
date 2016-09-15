@@ -10,28 +10,26 @@ var url;
 const TimeOut = 30000; //ms
 
 test.describe('Test Konsoli Bezpieczenstwa', function(){
+        this.timeout(TimeOut);
         driver = new webdriver.Builder().
         withCapabilities(webdriver.Capabilities.edge()).
         build();
 
     test.it('czy po zalogowaniu pojawia sie odpowiednia strona i czy poprawnie wylogowuje', function() {
-			var page = new utcPage(driver);
       this.timeout(TimeOut);
+      var page = new utcPage(driver);
       driver.sleep(3000);
 	    page.visit();
-      driver.sleep(1000);
+      page.waitToElement(webdriver.By.id('app'));
       driver.getCurrentUrl().then(function(url) {
         if(url == 'http://10.0.100.171:8082/#/console') {
-          driver.sleep(1000);
           driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li')).click();
-          driver.sleep(1000);
           driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li/ul/li[4]')).click();
-          driver.sleep(1000);
         }
       });
-      driver.sleep(1000);
+      page.waitToElement(page.loginInput);
       page.logIn('marcin', 'changeme', 11, 16);
-      driver.sleep(1000);
+      page.waitToElement(page.userManagement);
       driver.getCurrentUrl().then(function(url) {
         assert.equal('http://10.0.100.171:8082/#/console', url, 'Niepoprawny adres po zalogowaniu');
       });
@@ -42,7 +40,7 @@ test.describe('Test Konsoli Bezpieczenstwa', function(){
         });
       page.url = currentUrl;
       page.logout();
-      driver.sleep(1000);
+      page.waitToElement(page.loginInput);
       driver.getCurrentUrl().then(function(url) {
         assert.equal('http://10.0.100.171:8082/#/', url, 'Niepoprawny adres po wylogowaniu');
       });
@@ -52,9 +50,9 @@ test.describe('Test Konsoli Bezpieczenstwa', function(){
       var page = new utcPage(driver);
       this.timeout(TimeOut);
       page.visit();
-      driver.sleep(1000);
+      page.waitToElement(page.loginInput);
       page.logIn('marcin', 'changeme', 11, 16);
-      driver.sleep(1000);
+      page.waitToElement(page.userManagement);
     	page.getElement(page.navbarHeader).getText().then(function(text){
     		assert.equal(text, 'Konsola Bezpieczeństwa');
     	});
@@ -64,7 +62,7 @@ test.describe('Test Konsoli Bezpieczenstwa', function(){
     this.timeout(TimeOut);
     page.visit();
 
-    driver.sleep(1000);
+    page.waitToElement(page.userManagement);
 
 
     test.describe('#User Managment', function(){
@@ -124,7 +122,7 @@ test.describe('Test Konsoli Bezpieczenstwa', function(){
 			});
 
       page.clickIn(page.desktopApp);
-      driver.sleep(3000);
+      page.waitToElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/div[1]'));
       page.isElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/div[1]'));
       page.isElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/div[1]/div/span'));
       page.isElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/div[1]/div/div/button'));

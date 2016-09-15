@@ -16,16 +16,14 @@ test.beforeEach(function() {
   this.timeout(TimeOut);
   page.visit();
 
-  driver.sleep(1000);
+  page.waitToElement(webdriver.By.id('app'));
   driver.getCurrentUrl().then(function(url) {
     if(url == 'http://10.0.100.171:8082/#/console') {
-      driver.sleep(1000);
       driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li')).click();
-      driver.sleep(1000);
       driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li/ul/li[4]')).click();
-      driver.sleep(1000);
     }
   });
+  page.waitToElement(page.loginInput);
 });
 
 test.describe('User Management i Roles', function() {
@@ -35,16 +33,11 @@ test.describe('User Management i Roles', function() {
 			var page = new utcPage(driver);
       this.timeout(TimeOut);
 	    page.visit();
-      page.fillForm('marcin', 'changeme', 11, 16);
-			page.clickIn(page.logInButton);
-      driver.sleep(1000);
-      var currentUrl;
-      page.getUrl().then(function(text) {
-          currentUrl = text.toString();
-        });
-      page.url = currentUrl;
+      page.logIn('marcin', 'changeme', 11, 16);
+      page.waitToElement(page.userManagement);
       page.clickIn(page.userManagement);
-      driver.sleep(1000);
+
+      page.waitToElement(page.userDrop);
       page.isElement(page.userDrop);
 
       page.clickIn(page.userDrop);
@@ -78,12 +71,13 @@ test.describe('User Management i Roles', function() {
       });
 
       page.clickIn(page.collapseLi);
-      driver.sleep(1000);
+
+      page.waitToElement(page.appDiv);
       page.driver.findElement(page.appDiv)
       .getAttribute('class').then(function(text){
         expect(text).to.have.string(page.collapseClass)
       });
-      driver.sleep(1000);
+      page.waitToElement(page.appDiv);
       page.clickIn(page.collapseLi);
     });
 
@@ -91,32 +85,26 @@ test.describe('User Management i Roles', function() {
       var page = new utcPage(driver);
       this.timeout(TimeOut);
 	    page.visit();
-      page.fillForm('marcin', 'changeme', 11, 16);
-			page.clickIn(page.logInButton);
-      driver.sleep(1000);
-      var currentUrl;
-      page.getUrl().then(function(text) {
-          currentUrl = text.toString();
-        });
-      page.url = currentUrl;
+      page.waitToElement(page.loginInput);
+      page.logIn('marcin', 'changeme', 11, 16);
+      page.waitToElement(page.userManagement);
       page.clickIn(page.userManagement);
-      driver.sleep(1000);
 
+      page.waitToElement(page.roles);
       page.clickIn(page.roles);
-      driver.sleep(1000);
+      page.waitToElement(page.moduleTitle);
       page.getTxt(page.moduleTitle).then(function(text) {
         assert.equal(text, 'Roles', 'h2 module title ma bledny tytul');
       });
-      driver.sleep(1000);
+      page.waitToElement(page.addButton);
       page.getTxt(page.addButton).then(function(text) {
         assert.equal(text, 'Add', 'button ADD ma bledny tytul');
       });
 
       page.clickIn(page.addButton);
-      driver.sleep(1000);
+      page.waitToElement(page.addForm);
       page.isElement(page.addForm);
       page.clickIn(page.closeForm);
-      driver.sleep(1000);
       //tu powinno sie sprawdzic czy zamyka formularz dodawania
     });
 
@@ -124,30 +112,29 @@ test.describe('User Management i Roles', function() {
       var page = new utcPage(driver);
       this.timeout(TimeOut);
 	    page.visit();
-      page.fillForm('marcin', 'changeme', 11, 16);
-			page.clickIn(page.logInButton);
-      driver.sleep(1000);
-      var currentUrl;
-      page.getUrl().then(function(text) {
-          currentUrl = text.toString();
-        });
-      page.url = currentUrl;
+      page.waitToElement(page.loginInput);
+      page.logIn('marcin', 'changeme', 11, 16);
+      page.waitToElement(page.userManagement);
+
       page.clickIn(page.userManagement);
-      driver.sleep(1000);
+
+      page.waitToElement(page.roles);
 
       page.clickIn(page.roles);
-      driver.sleep(1000);
+      page.waitToElement(page.addButton);
 
       page.clickIn(page.addButton);
-      driver.sleep(1000);
+
+      page.waitToElement(webdriver.By.id('app'));
+      page.waitToElement(page.addForm);
       page.isElement(page.addForm);
       var rola = 'przykladowa rola';
       var opis = 'opis';
-      driver.sleep(1000);
+
       page.setText(page.inputRoleName, rola);
-      driver.sleep(1000);
+
       page.setText(page.textareaRoleDescription, opis);
-      driver.sleep(1000);
+
 
       page.getTxt(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr[1]/td/div/table/tbody/tr/td[1]/div')).
       then(function(text) {
@@ -174,31 +161,26 @@ test.describe('User Management i Roles', function() {
       var page = new utcPage(driver);
       this.timeout(TimeOut);
 	    page.visit();
+      page.waitToElement(page.loginInput);
       page.logIn('marcin', 'changeme', 11, 16);
-      driver.sleep(1000);
-      var currentUrl;
-      page.getUrl().then(function(text) {
-          currentUrl = text.toString();
-        });
-      page.url = currentUrl;
+      page.waitToElement(page.userManagement);
       page.clickIn(page.userManagement);
-      driver.sleep(1000);
+      page.waitToElement(page.roles);
 
       page.clickIn(page.roles);
-      driver.sleep(1000);
+      page.waitToElement(page.addButton);
 
       page.clickIn(page.addButton);
-      driver.sleep(1000);
 
       var rola = 'przykladowa rola';
       var opis = 'opis';
-      driver.sleep(1000);
+      page.waitToElement(page.inputRoleName);
       page.setText(page.inputRoleName, rola);
       page.setText(page.textareaRoleDescription, opis);
 
       page.clickIn(page.closeForm);
 
-      driver.sleep(1000);
+      page.waitToElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/div[1]'));
       page.isElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/div[1]'));
       page.isElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/div/div/div/div[1]/div/span'));
       page.isElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/div/div/div/div[1]/div/div/button[1]'));
@@ -212,39 +194,40 @@ test.describe('User Management i Roles', function() {
       });
 
       page.clickIn(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/div/div/div/div[1]/div/span'));
-      driver.sleep(1000);
+
+      page.waitToElement(webdriver.By.id('app'));
       page.clickIn(page.h4Profile);
       page.driver.findElement(webdriver.By.xpath('//*[@id="role-details-accordion"]/div[1]'))
       .getAttribute('class').then(function(text){
         expect(text).to.have.string('panel panel-default panel-active')
       });
-      driver.sleep(1000);
+      page.waitToElement(webdriver.By.id('app'));
       page.clickIn(page.h4Profile);
       page.driver.findElement(webdriver.By.xpath('//*[@id="role-details-accordion"]/div[1]'))
       .getAttribute('class').then(function(text){
         expect(text).to.have.string('panel panel-default panel-active panel-expanded')
       });
 
-      driver.sleep(1000);
+      page.waitToElement(webdriver.By.id('app'));
       page.clickIn(page.h4JobF);
       page.driver.findElement(webdriver.By.xpath('//*[@id="role-details-accordion"]/div[2]'))
       .getAttribute('class').then(function(text){
         expect(text).to.have.string('panel panel-default panel-active panel-expanded')
       });
-      driver.sleep(1000);
+      page.waitToElement(webdriver.By.id('app'));
       page.clickIn(page.h4JobF);
       page.driver.findElement(webdriver.By.xpath('//*[@id="role-details-accordion"]/div[2]'))
       .getAttribute('class').then(function(text){
         expect(text).to.have.string('panel panel-default panel-active')
       });
 
-      driver.sleep(1000);
+      page.waitToElement(webdriver.By.id('app'));
       page.clickIn(page.h4Users);
       page.driver.findElement(webdriver.By.xpath('//*[@id="role-details-accordion"]/div[3]'))
       .getAttribute('class').then(function(text){
         expect(text).to.have.string('panel panel-default panel-active panel-expanded')
       });
-      driver.sleep(1000);
+      page.waitToElement(webdriver.By.id('app'));
       page.clickIn(page.h4Users);
       page.driver.findElement(webdriver.By.xpath('//*[@id="role-details-accordion"]/div[3]'))
       .getAttribute('class').then(function(text){
