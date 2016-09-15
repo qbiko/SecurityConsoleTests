@@ -67,10 +67,26 @@ utcPage.prototype.logout = function() {
     this.clickIn(this.logoutButton);
 }
 
+utcPage.prototype.fillForm = function(login, password, IDInformator, IDJezyk) {
+    this.setText(this.loginInput, login);
+    this.setText(this.passwordInput, password);
+    this.chooseInformator(IDInformator); //UX USERS TEST 12, PLATFORM 11
+    this.chooseLanguage(IDJezyk); //PL 16 ENG 2
+}
+
 utcPage.prototype.logIn = function(login, password, IDInformator, IDJezyk) {
     this.fillForm(login, password, IDInformator, IDJezyk);
     this.clickIn(this.logInButton);
 }
+
+utcPage.prototype.checkLocalStorage = function(key) {
+    var d = webdriver.promise.defer();
+    var temp = String("return window.localStorage.getItem('" + key + "');");
+    this.driver.executeScript(temp).then(function(return_value) {
+      d.fulfill(return_value);
+    });
+    return d.promise;
+};
 
 utcPage.prototype.titlePage = function() {
     var d = webdriver.promise.defer();
@@ -129,13 +145,6 @@ utcPage.prototype.chooseLanguage = function(IDLanguage) {
     this.clickIn(webdriver.By.xpath('//*[@id="locale"]/li[' + IDLanguage + ']'));
 }
 
-utcPage.prototype.fillForm = function(login, password, IDInformator, IDJezyk) {
-    this.setText(this.loginInput, login);
-    this.setText(this.passwordInput, password);
-    this.chooseInformator(IDInformator); //UX USERS TEST 12, PLATFORM 11
-    this.chooseLanguage(IDJezyk); //PL 16 ENG 2
-}
-
 utcPage.prototype.setText = function(path, text){
     var name = this.driver.findElement(path);
     name.sendKeys(text);
@@ -148,15 +157,6 @@ utcPage.prototype.waitTo = function(name){
 utcPage.prototype.getUserData = function(path){
     var userdata = this.driver.findElement({xpath: path});
     return userdata.getText();
-};
-
-utcPage.prototype.checkLocalStorage = function(key) {
-    var d = webdriver.promise.defer();
-    var temp = String("return window.localStorage.getItem('" + key + "');");
-    this.driver.executeScript(temp).then(function(return_value) {
-      d.fulfill(return_value);
-    });
-    return d.promise;
 };
 
 utcPage.prototype.cleanUsername = function() {
