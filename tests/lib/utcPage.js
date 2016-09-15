@@ -67,6 +67,11 @@ utcPage.prototype.logout = function() {
     this.clickIn(this.logoutButton);
 }
 
+utcPage.prototype.logIn = function(login, password, IDInformator, IDJezyk) {
+    this.fillForm(login, password, IDInformator, IDJezyk);
+    this.clickIn(this.logInButton);
+}
+
 utcPage.prototype.titlePage = function() {
     var d = webdriver.promise.defer();
     this.driver.getTitle().then(function(title) {
@@ -129,11 +134,6 @@ utcPage.prototype.fillForm = function(login, password, IDInformator, IDJezyk) {
     this.setText(this.passwordInput, password);
     this.chooseInformator(IDInformator); //UX USERS TEST 12, PLATFORM 11
     this.chooseLanguage(IDJezyk); //PL 16 ENG 2
-}
-
-utcPage.prototype.logIn = function(login, password, IDInformator, IDJezyk) {
-    this.fillForm(login, password, IDInformator, IDJezyk);
-    this.clickIn(this.logInButton);
 }
 
 utcPage.prototype.setText = function(path, text){

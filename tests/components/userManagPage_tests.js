@@ -18,7 +18,7 @@ test.beforeEach(function() {
 
   driver.sleep(1000);
   driver.getCurrentUrl().then(function(url) {
-    if(url == 'http://10.0.100.171:8082/#/console') {
+    if(url != (page.url +'/#/')) {
       driver.sleep(1000);
       driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li')).click();
       driver.sleep(1000);
