@@ -84,6 +84,13 @@ utcPage.prototype.checkLocalStorage = function(key) {
     return d.promise;
 };
 
+utcPage.prototype.fillForm = function(login, password, IDInformator, IDJezyk) {
+    this.setText(this.loginInput, login);
+    this.setText(this.passwordInput, password);
+    this.chooseInformator(IDInformator); //UX USERS TEST 12, PLATFORM 11
+    this.chooseLanguage(IDJezyk); //PL 16 ENG 2
+}
+
 utcPage.prototype.titlePage = function() {
     var d = webdriver.promise.defer();
     this.driver.getTitle().then(function(title) {
