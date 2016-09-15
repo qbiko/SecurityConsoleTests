@@ -31,6 +31,7 @@
     "testLogin": "mocha -R xunit-file --compilers js:babel-core/register --require tests/jsdom-setup.js tests/components/loginPage_tests.js",
     "testConsole": "mocha -R xunit-file --compilers js:babel-core/register --require tests/jsdom-setup.js tests/components/consolePage_tests.js",
     "testUserM": "mocha -R xunit-file --compilers js:babel-core/register --require tests/jsdom-setup.js tests/components/userManagPage_tests.js",
-    "testSettings": "mocha -R xunit-file --compilers js:babel-core/register --require tests/jsdom-setup.js tests/components/settingsPage_tests.js"
+    "testSettings": "mocha -R xunit-file --compilers js:babel-core/register --require tests/jsdom-setup.js tests/components/settingsPage_tests.js",
+    "testConsoleInC": "mocha --compilers js:babel-core/register --require tests/jsdom-setup.js tests/components/consolePage_tests.js"
   }
 }
