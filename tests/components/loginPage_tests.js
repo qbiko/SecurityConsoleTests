@@ -13,11 +13,10 @@ test.before(function() {
     var page = new utcPage(driver);
     this.timeout(TimeOut);
     page.visit();
-    page.waitToElement(webdriver.By.id('app'));
+    page.waitToElement(page.mainContainer);
     driver.getCurrentUrl().then(function(url) {
-      if(url != 'http://10.0.100.171:8082/#/') {
-        driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li')).click();
-        driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li/ul/li[4]')).click();
+      if(url != page.urlToCheck) {
+        page.logout();
       }
     });
 });

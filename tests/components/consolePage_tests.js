@@ -3,10 +3,7 @@ var webdriver = require('selenium-webdriver');
 var test = require('selenium-webdriver/testing');
 var utcPage = require('../lib/utcPage.js');
 import {expect} from 'chai';
-import React from 'react';
-import { mount } from 'enzyme';
 var driver;
-var url;
 const TimeOut = 30000; //ms
 
 test.describe('Test Konsoli Bezpieczenstwa', function(){
@@ -22,16 +19,16 @@ test.describe('Test Konsoli Bezpieczenstwa', function(){
 	    page.visit();
       page.waitToElement(webdriver.By.id('app'));
       driver.getCurrentUrl().then(function(url) {
-        if(url == 'http://10.0.100.171:8082/#/console') {
-          driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li')).click();
-          driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li/ul/li[4]')).click();
+        if(url != page.urlToCheck) {
+          page.logout();
         }
       });
       page.waitToElement(page.loginInput);
       page.logIn('marcin', 'changeme', 11, 16);
       page.waitToElement(page.userManagement);
+      var loginUrl = String(page.url + '/#/console');
       driver.getCurrentUrl().then(function(url) {
-        assert.equal('http://10.0.100.171:8082/#/console', url, 'Niepoprawny adres po zalogowaniu');
+        assert.equal(loginUrl, url, 'Niepoprawny adres po zalogowaniu');
       });
 
       var currentUrl;
@@ -42,7 +39,7 @@ test.describe('Test Konsoli Bezpieczenstwa', function(){
       page.logout();
       page.waitToElement(page.loginInput);
       driver.getCurrentUrl().then(function(url) {
-        assert.equal('http://10.0.100.171:8082/#/', url, 'Niepoprawny adres po wylogowaniu');
+        assert.equal(page.urlToCheck, url, 'Niepoprawny adres po wylogowaniu');
       });
     });
 

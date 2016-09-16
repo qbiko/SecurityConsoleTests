@@ -3,6 +3,8 @@ var webdriver = require('selenium-webdriver');
 function utcPage(driver) {
     this.driver = driver;
     this.url = 'http://10.0.100.171:8082';
+    this.urlToCheck = String(this.url + '/#/');
+    this.mainContainer = webdriver.By.id('app');
     //1strona
     this.loginInput = webdriver.By.id('username');
     this.passwordInput = webdriver.By.id('password');
@@ -55,6 +57,13 @@ function utcPage(driver) {
     this.h4Profile = webdriver.By.xpath('//*[@id="role-details-accordion"]/div[1]/div[1]/h4');
     this.h4JobF = webdriver.By.xpath('//*[@id="role-details-accordion"]/div[2]/div[1]/h4');
     this.h4Users = webdriver.By.xpath('//*[@id="role-details-accordion"]/div[3]/div[1]/h4');
+    //settings
+    this.passwordBtn = webdriver.By.xpath('//a[contains(@title, "Passwords")]');
+    this.sessionsBtn = webdriver.By.xpath('//a[contains(@title, "Sessions")]');
+    this.contactBtn = webdriver.By.xpath('//a[contains(@title, "Contact")]');
+
+    this.performanceContainer = webdriver.By.xpath('//div[contains(@class, "list-with-panel-panel-container")]');
+    this.performanceH3 = webdriver.By.xpath('//*[@id="heading-profile"]/div[1]/h3[contains(@class, "panel-title side-panel-title")]');
 };
 
 utcPage.prototype.visit = function() {

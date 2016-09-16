@@ -18,9 +18,8 @@ test.beforeEach(function() {
 
   page.waitToElement(webdriver.By.id('app'));
   driver.getCurrentUrl().then(function(url) {
-    if(url == 'http://10.0.100.171:8082/#/console') {
-      driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li')).click();
-      driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li/ul/li[4]')).click();
+    if(url != page.urlToCheck) {
+      page.logout();
     }
   });
   page.waitToElement(page.loginInput);
@@ -114,15 +113,16 @@ test.describe('User Management i Roles', function() {
 	    page.visit();
       page.waitToElement(page.loginInput);
       page.logIn('marcin', 'changeme', 11, 16);
+      page.waitToElement(webdriver.By.id('app'));
       page.waitToElement(page.userManagement);
-
       page.clickIn(page.userManagement);
 
+      page.waitToElement(webdriver.By.id('app'));
       page.waitToElement(page.roles);
-
       page.clickIn(page.roles);
-      page.waitToElement(page.addButton);
 
+      page.waitToElement(webdriver.By.id('app'));
+      page.waitToElement(page.addButton);
       page.clickIn(page.addButton);
 
       page.waitToElement(webdriver.By.id('app'));
@@ -132,7 +132,6 @@ test.describe('User Management i Roles', function() {
       var opis = 'opis';
 
       page.setText(page.inputRoleName, rola);
-
       page.setText(page.textareaRoleDescription, opis);
 
 
@@ -165,11 +164,13 @@ test.describe('User Management i Roles', function() {
       page.logIn('marcin', 'changeme', 11, 16);
       page.waitToElement(page.userManagement);
       page.clickIn(page.userManagement);
+
+      page.waitToElement(webdriver.By.id('app'));
       page.waitToElement(page.roles);
-
       page.clickIn(page.roles);
-      page.waitToElement(page.addButton);
 
+      page.waitToElement(webdriver.By.id('app'));
+      page.waitToElement(page.addButton);
       page.clickIn(page.addButton);
 
       var rola = 'przykladowa rola';
@@ -177,7 +178,7 @@ test.describe('User Management i Roles', function() {
       page.waitToElement(page.inputRoleName);
       page.setText(page.inputRoleName, rola);
       page.setText(page.textareaRoleDescription, opis);
-
+      page.waitToElement(webdriver.By.id('app'));
       page.clickIn(page.closeForm);
 
       page.waitToElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/div[1]'));

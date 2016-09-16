@@ -2,17 +2,8 @@ var assert = require('assert'),
 test = require('selenium-webdriver/testing'),
 webdriver = require('selenium-webdriver');
 var utcPage = require('../lib/utcPage.js');
-import { mount } from 'enzyme';
 import { expect } from 'chai';
-var link = 'http://10.0.100.171:8082/#/settings/system';
 var driver;
-
-var passwordBtn = webdriver.By.xpath('//a[contains(@title, "Passwords")]');
-var sessionsBtn = webdriver.By.xpath('//a[contains(@title, "Sessions")]');
-var contactBtn = webdriver.By.xpath('//a[contains(@title, "Contact")]');
-
-var performanceContainer = webdriver.By.xpath('//div[contains(@class, "list-with-panel-panel-container")]');
-var performanceH3 = webdriver.By.xpath('//*[@id="heading-profile"]/div[1]/h3[contains(@class, "panel-title side-panel-title")]');
 const TimeOut = 30000;
 
 test.before(function() {
@@ -23,9 +14,8 @@ test.before(function() {
     page.visit();
     page.waitToElement(webdriver.By.id('app'));
     driver.getCurrentUrl().then(function(url) {
-      if(url != 'http://10.0.100.171:8082/#/') {
-        driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li')).click();
-        driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/nav/div/ul/li/ul/li[4]')).click();
+      if(url != page.urlToCheck) {
+        page.logout();
       }
     });
     page.waitToElement(page.loginInput);
@@ -39,9 +29,9 @@ test.describe('Test zakladki Settings', function(){
             var page = new utcPage(driver);
             page.visit();
             page.clickIn(page.settings);
-            page.waitToElement(passwordBtn);
-            page.clickIn(passwordBtn);
-            driver.findElement(performanceContainer).isDisplayed().then(function(text){
+            page.waitToElement(page.passwordBtn);
+            page.clickIn(page.passwordBtn);
+            driver.findElement(page.performanceContainer).isDisplayed().then(function(text){
                 assert.equal(text, true);
             })
         });
@@ -50,10 +40,9 @@ test.describe('Test zakladki Settings', function(){
             var page = new utcPage(driver);
             page.visit();
             page.clickIn(page.settings);
-            //driver.sleep(1000);
-            page.waitToElement(sessionsBtn);
-            page.clickIn(sessionsBtn);
-            driver.findElement(performanceContainer).isDisplayed().then(function(text){
+            page.waitToElement(page.sessionsBtn);
+            page.clickIn(page.sessionsBtn);
+            driver.findElement(page.performanceContainer).isDisplayed().then(function(text){
                 assert.equal(text, true);
             })
         });
@@ -62,11 +51,10 @@ test.describe('Test zakladki Settings', function(){
             var page = new utcPage(driver);
             page.visit();
             page.clickIn(page.settings);
-            //driver.sleep(1000);
-            page.waitToElement(contactBtn);
-            page.clickIn(contactBtn);
-            page.waitToElement(performanceContainer);
-            driver.findElement(performanceContainer).isDisplayed().then(function(text){
+            page.waitToElement(page.contactBtn);
+            page.clickIn(page.contactBtn);
+            page.waitToElement(page.performanceContainer);
+            driver.findElement(page.performanceContainer).isDisplayed().then(function(text){
                 assert.equal(text, true);
             })
         });
