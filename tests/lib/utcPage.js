@@ -1,4 +1,5 @@
 var webdriver = require('selenium-webdriver');
+var assert = require('assert');
 
 function utcPage(driver) {
     this.driver = driver;
@@ -61,9 +62,14 @@ function utcPage(driver) {
     this.passwordBtn = webdriver.By.xpath('//a[contains(@title, "Passwords")]');
     this.sessionsBtn = webdriver.By.xpath('//a[contains(@title, "Sessions")]');
     this.contactBtn = webdriver.By.xpath('//a[contains(@title, "Contact")]');
-
     this.performanceContainer = webdriver.By.xpath('//div[contains(@class, "list-with-panel-panel-container")]');
     this.performanceH3 = webdriver.By.xpath('//*[@id="heading-profile"]/div[1]/h3[contains(@class, "panel-title side-panel-title")]');
+    //UMM USERS
+    this.userFirstName = webdriver.By.id('user-firstname');
+    this.saveButton = webdriver.By.xpath('//*[@id="heading-profile"]/div[3]/button[contains(@class, "btn btn-default")]');
+    this.userUserName = webdriver.By.id('user-username');
+    this.userPassword = webdriver.By.id('user-password');
+    this.userLastName = webdriver.By.id('user-lastname');
 };
 
 utcPage.prototype.visit = function() {
@@ -92,6 +98,19 @@ utcPage.prototype.checkLocalStorage = function(key) {
     });
     return d.promise;
 };
+
+utcPage.prototype.checkFocusElement = function(elemToCheck) {
+  var focusID;
+  this.driver.findElement(elemToCheck).getAttribute('id').then(function(id){
+    focusID = id;
+  })
+  var d = webdriver.promise.defer();
+  this.driver.switchTo().activeElement().getAttribute('id').then(function(element){
+    assert.equal(element, focusID)
+    d.fulfill(element);
+  })
+  return d.promise;
+}
 
 utcPage.prototype.fillForm = function(login, password, IDInformator, IDJezyk) {
     this.setText(this.loginInput, login);
