@@ -37,7 +37,8 @@
     "testConsoleInC": "mocha --compilers js:babel-core/register --require tests/jsdom-setup.js tests/components/consolePage_tests.js",
     "testUserMInC": "mocha --compilers js:babel-core/register --require tests/jsdom-setup.js tests/components/userManagPage_tests.js",
     "testSettingsInC": "mocha --compilers js:babel-core/register --require tests/jsdom-setup.js tests/components/settingsPage_tests.js",
-    "testUMMUsersInC": "mocha --compilers js:babel-core/register --require tests/jsdom-setup.js tests/components/UMMUsers_tests.js"
+    "testUMMUsersInC": "mocha --compilers js:babel-core/register --require tests/jsdom-setup.js tests/components/UMMUsers_tests.js",
+    "testLPageKeys": "mocha --compilers js:babel-core/register --require tests/jsdom-setup.js tests/components/LoginPageKeys.js"
 
   }
 }
