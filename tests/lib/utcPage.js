@@ -4,6 +4,7 @@ var assert = require('assert');
 const ENTER = '\ue007';
 const TAB = '\ue004';
 const ARROW_DOWN = '\ue015';
+const SPACE = '\ue00d';
 
 function utcPage(driver) {
     this.driver = driver;
@@ -74,12 +75,19 @@ function utcPage(driver) {
     //UMM USERS
     this.userFirstName = webdriver.By.id('user-firstname');
     this.saveButton = webdriver.By.xpath('//*[@id="heading-profile"]/div[3]/button[contains(@class, "btn btn-default")]');
+    this.actionsButton = webdriver.By.xpath('//*[@id="heading-profile"]/div[3]/div/button');
+    //*[@id="heading-profile"]/div[3]/div/button
     this.userUserName = webdriver.By.id('user-username');
     this.userPassword = webdriver.By.id('user-password');
     this.userLastName = webdriver.By.id('user-lastname');
     //keyboard
     this.keyboardStart = webdriver.By.className('brand');
     this.stop = false;
+    this.elementToClick;
+    this.disabledElement = webdriver.By.className('icon icon-disabled-red');
+    this.disabledClass = 'icon icon-disabled-red';
+    this.successButton = webdriver.By.className('btn btn-success');
+    this.jobName = webdriver.By.id('job-name');
 };
 
 utcPage.prototype.visit = function() {
@@ -142,8 +150,16 @@ utcPage.prototype.logInKeyboard = function(login, password, IDInformator, IDLang
 utcPage.prototype.goToUserMKeyboard = function() {
     this.setText(this.keyboardStart, TAB);
     var elem;
-    this.clickKey(2, TAB);
-    elem = this.driver.switchTo().activeElement(); //button ADD
+    this.clickKey(3, TAB);
+    elem = this.driver.switchTo().activeElement(); //User Management
+    elem.sendKeys(ENTER);
+}
+
+utcPage.prototype.goToJobFuncKeyboard = function() {
+    this.setText(this.keyboardStart, TAB);
+    var elem;
+    this.clickKey(3, TAB);
+    elem = this.driver.switchTo().activeElement(); //Job Functions
     elem.sendKeys(ENTER);
 }
 
@@ -165,14 +181,15 @@ utcPage.prototype.addNewUserKeyboard = function(lastname, username, password) {
     elem.sendKeys(ENTER);
 }
 
-utcPage.prototype.checkIfAddUser = function(nazwa) {
+utcPage.prototype.checkIfUserExist = function(usernameToCheck) {
+  this.stop = false;
   this.waitToElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr/td/div/div/div/a/table/tbody/tr/td[4]/div'));
   this.driver.sleep(100);
   this.driver.findElements(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr/td/div/div/div/a/table/tbody/tr/td[4]/div'))
   .then(function(userList){
     userList.forEach(function(username){
       username.getText().then(function(name){
-          if(name===nazwa) {
+          if(name===usernameToCheck) {
             this.stop = true;
           }
         }.bind(this))
@@ -182,12 +199,85 @@ utcPage.prototype.checkIfAddUser = function(nazwa) {
         elem = this.driver.switchTo().activeElement();
         this.driver.sleep(100);
         elem.sendKeys(TAB);
-        return this.checkIfAddUser(nazwa);
+        return this.checkIfUserExist(usernameToCheck);
       }
       else {
-        console.log('Found user: ' + nazwa);
+        console.log('Found user: ' + usernameToCheck);
       }
     }.bind(this))
+}
+
+utcPage.prototype.showUserDetails = function(usernameToCheck) {
+  this.stop = false;
+  this.waitToElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr/td/div/div/div/a/table/tbody/tr/td[4]/div'));
+  this.driver.sleep(100);
+  this.driver.findElements(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr/td/div/div/div/a/table/tbody/tr/td[4]/div'))
+  .then(function(userList){
+    userList.forEach(function(username){
+      username.getText().then(function(name){
+          if(name===usernameToCheck) {
+            //username.click();
+            this.elementToClick = username;
+            this.stop = true;
+          }
+        }.bind(this))
+      }.bind(this))
+      if(this.stop===false){
+        var elem;
+        elem = this.driver.switchTo().activeElement();
+        this.driver.sleep(100);
+        elem.sendKeys(TAB);
+        return this.showUserDetails(usernameToCheck);
+      }
+      else {
+        var elem;
+        elem = this.driver.switchTo().activeElement();
+        this.driver.sleep(100);
+        elem.sendKeys(TAB);
+        this.driver.sleep(500);
+        this.elementToClick.click();
+        console.log('Found user: ' + usernameToCheck);
+      }
+    }.bind(this))
+}
+
+utcPage.prototype.findAndGoToJobFunc = function(jobNameToFind) {
+  this.stop = false;
+  this.waitToElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr/td/div/div/div/a/table/tbody/tr/td[1]/div'));
+  this.driver.sleep(100);
+  this.driver.findElements(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr/td/div/div/div/a/table/tbody/tr/td[1]/div'))
+  .then(function(jobFList){
+    jobFList.forEach(function(functionName){
+      functionName.getText().then(function(name){
+          if(name===jobNameToFind) {
+            //username.click();
+            this.elementToClick = functionName;
+            this.stop = true;
+          }
+        }.bind(this))
+      }.bind(this))
+      if(this.stop===false){
+        var elem;
+        elem = this.driver.switchTo().activeElement();
+        this.driver.sleep(100);
+        elem.sendKeys(TAB);
+        return this.findAndGoToJobFunc(jobNameToFind);
+      }
+      else {
+        var elem;
+        elem = this.driver.switchTo().activeElement();
+        this.driver.sleep(100);
+        elem.sendKeys(TAB);
+        this.driver.sleep(500);
+        this.elementToClick.click();
+        console.log('Found job function: ' + jobNameToFind);
+      }
+    }.bind(this))
+}
+
+utcPage.prototype.chooseJobFunction = function(number){
+    this.clickKey(number, TAB);
+    this.clickKey(1, SPACE);
 }
 
 utcPage.prototype.clickKey = function(numberOfTimes, key) {
