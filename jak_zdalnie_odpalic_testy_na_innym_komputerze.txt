@@ -1,0 +1,11 @@
+1. Na komputerze, na którym chcemy odpaliæ testy zainstalowaæ selenium-standalone, wpisuj¹c w konsoli nastêpuj¹ce komendy:
+sudo npm install selenium-standalone
+sudo selenium-standalone install
+2. Nastêpnie uruchomiæ serwer, wpisuj¹c:
+sudo selenium-standalone start
+Serwer bêdzie dostêpny pod adresem: http://IPKOMP:4444/wd/hub
+3. Nastêpnie na innym komputerze wystarczy uruchomiæ skrypt z testem z nastêpuj¹co zdefiniowanym driverem:
+    driver = new webdriver.Builder()
+    .forBrowser('nazwa_przegladarki')
+    .usingServer('http://IPKOMP:4444/wd/hub/')
+    .build();
