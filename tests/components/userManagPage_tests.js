@@ -8,13 +8,12 @@ const TimeOut = 30000; //ms
 
 test.before(function() {
     this.timeout(TimeOut);
-    /*
+    var args = process.argv.slice(2);
+    var browser = args[0].substring(2);
     driver = new webdriver.Builder()
-    .forBrowser('chrome')
-    .usingServer('http://localhost:4444/wd/hub/')
+    .forBrowser(browser)
+    //.usingServer('http://localhost:4444/wd/hub/')
     .build();
-    */
-    driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.edge()).build();
 });
 
 test.beforeEach(function() {
