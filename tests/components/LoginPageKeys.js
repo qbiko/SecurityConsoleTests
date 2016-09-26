@@ -21,6 +21,12 @@ var userInfo = [String("Kuba" + Math.floor((Math.random() * 100000) + 1)), Strin
 
 test.before(function() {
     this.timeout(TimeOut);
+    /*
+    driver = new webdriver.Builder()
+    .forBrowser('chrome')
+    .usingServer('http://localhost:4444/wd/hub/')
+    .build();
+    */
     driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.edge()).build();
 });
 
