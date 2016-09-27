@@ -11,9 +11,11 @@ test.before(function() {
     this.timeout(TimeOut);
     var args = process.argv.slice(2);
     var browser = args[0].substring(2);
+    if(browser=='edge') browser = 'MicrosoftEdge';
+    if(browser=='ie') browser = 'internet explorer';
     driver = new webdriver.Builder()
     .forBrowser(browser)
-    //.usingServer('http://localhost:4444/wd/hub/')
+    .usingServer('http://10.0.100.79:4444/wd/hub/')
     .build();
     var page = new utcPage(driver);
     this.timeout(TimeOut);
