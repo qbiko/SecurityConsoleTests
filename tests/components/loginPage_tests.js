@@ -87,6 +87,7 @@ test.describe('Strona logowania', function() {
       });
 
 		});
+    
     test.it('zbadaj czy w input przesuwa sie do gory i ma kolor czerwony', function() {
       var page = new utcPage(driver);
       page.visit();
@@ -137,6 +138,7 @@ test.describe('Strona logowania', function() {
      assert.equal(text, 'This field is required')//*[@id="app"]/section/div/div/div/div/section/div[3]/form/div[2]/span[3]
    });
  });
+
  test.it('czy po uzupelnieniu username i password, znika informacja ze pola sa wymagane ?', function(){
 
   var page = new utcPage(driver);
@@ -145,12 +147,14 @@ test.describe('Strona logowania', function() {
     assert.equal(text, '')
    });
  });
+
  test.it('czy panel z Directory i Language jest widoczny bez zadnej poczatkowej interakcji', function(){
    var page = new utcPage(driver);
    page.getElement(page.optionsPanel).getAttribute('aria-hidden').then(function(text){
      assert.equal(text, 'false')
    });
  });
+
  test.it('czy panel z Directory i Language zostaje ukryty po jego kliknieciu', function(){
    var page = new utcPage(driver);
    page.clickIn(page.moreOptions);
@@ -159,6 +163,7 @@ test.describe('Strona logowania', function() {
    })
    page.clickIn(page.moreOptions);
  });
+
  test.it('klikniecie zmiany jezyka i sprawdzenie czy placeholdery zmienily jezyk w formularzu', function(){
    var page = new utcPage(driver);
 

@@ -482,7 +482,7 @@ utcPage.prototype.findAllElementsAndCheck = function(elementHTML, attribute){
     });
 }
 
-//function to choose user in users list, and click assign btn in selected bookmark in accordion and wait to panelContent
+//funkcja wybiera usera z listy i klika assign btn w wybranej zakladce w accoriodnie i czeka na zaladowanie elementow
 utcPage.prototype.clickAssignInAccordionBookmark = function(userToClick, whichBookmarkDiv, expand, elementBtn, panelContent){
 
     this.waitToElement(userToClick);

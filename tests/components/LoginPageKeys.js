@@ -56,7 +56,7 @@ test.describe('Accessibility - tylko klawiatura', function(){
         this.timeout(TimeOut);
         var page = new utcPage(driver);
         page.visit();
-
+        //logowanie
         page.waitToElement(page.loginInput);
         page.waitToElement(page.informatorSelect);
         page.waitToElement(page.languageSelect);
