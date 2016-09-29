@@ -1,9 +1,8 @@
 var assert = require('assert'),
 test = require('selenium-webdriver/testing'),
 webdriver = require('selenium-webdriver');
-
 var utcPage = require('../lib/utcPage.js');
-import { expect } from 'chai';
+var expect = require('chai').expect;
 var driver;
 var page;
 
@@ -17,7 +16,7 @@ const TimeOut = 30000; //ms
 test.before(function(){
     this.timeout(TimeOut);
     var args = process.argv.slice(2);
-    var browser = args[0].substring(2);
+    var browser = args[3].substring(2);
     if(browser=='edge') browser = 'MicrosoftEdge';
     if(browser=='ie') browser = 'internet explorer';
     driver = new webdriver.Builder()

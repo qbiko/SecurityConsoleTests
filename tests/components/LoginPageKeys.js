@@ -2,16 +2,13 @@ var assert = require('assert'),
 test = require('selenium-webdriver/testing'),
 webdriver = require('selenium-webdriver');
 var utcPage = require('../lib/utcPage.js');
-import { expect } from 'chai';
+var expect = require('chai').expect;
 var driver;
-var testowa;
-var userList;
 
 const TimeOut = 30000; //ms
 const ENTER = '\ue007';
 const TAB = '\ue004';
 const ARROW_DOWN = '\ue015';
-const PAGE_DOWN = '\ue00f';
 const CTRL = '\ue009';
 const UP = '\ue013';
 const DOWN = '\ue015';
@@ -22,7 +19,7 @@ var userInfo = [String("Kuba" + Math.floor((Math.random() * 100000) + 1)), Strin
 test.before(function() {
     this.timeout(TimeOut);
     var args = process.argv.slice(2);
-    var browser = args[0].substring(2);
+    var browser = args[3].substring(2);
     if(browser=='edge') browser = 'MicrosoftEdge';
     if(browser=='ie') browser = 'internet explorer';
     driver = new webdriver.Builder()
@@ -122,14 +119,10 @@ test.describe('Accessibility - only keyboard', function(){
 
           page.waitToElement(page.userLastName)
           page.clickIn(page.userLastName);
-          //driver.sleep(1000);
           driver.findElement(page.userLastName).sendKeys(CTRL, UP);
-          //driver.sleep(1000);
           page.clickKey(1, (CTRL, DOWN));
           page.clickKey(1, ENTER);
-          //driver.sleep(1000);
           page.clickKey(1, TAB);
-          //driver.sleep(100);
           var elem;
           elem = driver.switchTo().activeElement();
           //elem.sendKeys(userInfo[1] + 'nowy');
@@ -143,10 +136,8 @@ test.describe('Accessibility - only keyboard', function(){
           page.waitToElement(page.mainContainer);
           driver.navigate().refresh().then(function(){
             page.waitToElement(page.keyboardStart);
-            //driver.sleep(1000);
             page.setText(page.keyboardStart, TAB);
             page.clickKey(8, TAB); //button ADD
-            //driver.sleep(1000);
             page.checkIfUserExist(usernameToCheck + 'nowy');
           })
 

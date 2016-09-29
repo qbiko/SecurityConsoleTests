@@ -1,6 +1,6 @@
 var webdriver = require('selenium-webdriver');
 var assert = require('assert');
-import { expect } from 'chai';
+var expect = require('chai').expect;
 
 const ENTER = '\ue007';
 const TAB = '\ue004';
@@ -329,7 +329,7 @@ utcPage.prototype.clickKey = function(numberOfTimes, key) {
 
 utcPage.prototype.checkLocalStorage = function(key) {
     var d = webdriver.promise.defer();
-    var temp = String("return window.localStorage.getItem('" + key + "');");
+    var temp = String("return window.localStorage.getItem('" + key + "');"); //wywolujemy skrypt js, by pobral do zmiennej wartosc z localStorage
     this.driver.executeScript(temp).then(function(return_value) {
       d.fulfill(return_value);
     });

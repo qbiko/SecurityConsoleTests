@@ -2,7 +2,7 @@ var assert = require('assert');
 var webdriver = require('selenium-webdriver');
 var test = require('selenium-webdriver/testing');
 var utcPage = require('../lib/utcPage.js');
-import {expect} from 'chai';
+var expect = require('chai').expect;
 var driver;
 
 const TimeOut = 30000; //ms
@@ -10,12 +10,12 @@ const TimeOut = 30000; //ms
 test.before(function() {
     this.timeout(TimeOut);
     var args = process.argv.slice(2);
-    var browser = args[0].substring(2);
+    var browser = args[3].substring(2);
     if(browser=='edge') browser = 'MicrosoftEdge';
     if(browser=='ie') browser = 'internet explorer';
     driver = new webdriver.Builder()
     .forBrowser(browser)
-    .usingServer('http://10.0.100.79:4444/wd/hub/')
+    //.usingServer('http://10.0.100.79:4444/wd/hub/')
     .build();
     var page = new utcPage(driver);
     this.timeout(TimeOut);
@@ -36,7 +36,7 @@ test.describe('Strona logowania', function() {
 			var page = new utcPage(driver);
 	    page.visit();
       page.waitToElement(page.loginInput);
-      page.logIn('marcin', 'changeme', 11, 16);
+      page.logIn('Jakub', 'Chodorowski', 12, 16);
       page.waitToElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/div/section/div[2]'));
       driver.findElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/div/section/div[2]')).isEnabled(); //obczaic pozniej
     });
@@ -45,12 +45,14 @@ test.describe('Strona logowania', function() {
 			var page = new utcPage(driver);
 	    page.visit();
       page.waitToElement(page.loginInput);
+      //uzupelniamy pola do logowania login: Jakub, password: Chodorowski, jezyk: PL, UX.USERS.TEST
       page.fillForm('Jakub', 'Chodorowski', 12, 16);
-
+      //nastepnie sprawdzamy czy po zmianie jezyka i direcory zmienily sie ich wartosci rowniez w localStorage
+      //jezyk
       page.checkLocalStorage('locale').then(function(value) {
         assert.equal(value, 'pl-PL', 'Bledna wartosc locale w localStorage');
       });
-
+      //direcory
       page.checkLocalStorage('domain').then(function(value) {
         assert.equal(value, 'UX.USERS.TEST', 'Bledna wartosc domain w localStorage');
       });
