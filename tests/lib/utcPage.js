@@ -185,7 +185,7 @@ utcPage.prototype.logInKeyboard = function(login, password, IDInformator, IDLang
     elem.sendKeys(ENTER);
 }
 
-utcPage.prototype.goToUserMKeyboard = function() {
+utcPage.prototype.goToUserMKeyboard = function() { //funkcja przejscia do User Management zalezna od ulozenia zakladki UserManagement w konsoli
     this.setText(this.keyboardStart, TAB);
     var elem;
     this.clickKey(3, TAB);
@@ -193,7 +193,7 @@ utcPage.prototype.goToUserMKeyboard = function() {
     elem.sendKeys(ENTER);
 }
 
-utcPage.prototype.goToJobFuncKeyboard = function() {
+utcPage.prototype.goToJobFuncKeyboard = function() { //funkcja przejscia do JobFunction gdy jestesmy w UserManagement
     this.setText(this.keyboardStart, TAB);
     var elem;
     this.clickKey(3, TAB);
@@ -201,11 +201,11 @@ utcPage.prototype.goToJobFuncKeyboard = function() {
     elem.sendKeys(ENTER);
 }
 
-utcPage.prototype.addNewUserKeyboard = function(lastname, username, password) {
-    this.setText(this.keyboardStart, TAB);
+utcPage.prototype.addNewUserKeyboard = function(lastname, username, password) {// funkcja dzieki ktorej za pomoca klawiatury dodajemy nowego uzytkownika
+    this.setText(this.keyboardStart, TAB); //wciskanie klawiszy zaczynamy od loga lenel
     var elem;
-    this.clickKey(8, TAB);
-    elem = this.driver.switchTo().activeElement(); //button ADD
+    this.clickKey(8, TAB); //klikamy 8 razy TAB
+    elem = this.driver.switchTo().activeElement(); //jestesmy na button ADD
     elem.sendKeys(ENTER);
     this.clickKey(2, TAB);
     elem = this.driver.switchTo().activeElement(); //input Last
@@ -216,23 +216,23 @@ utcPage.prototype.addNewUserKeyboard = function(lastname, username, password) {
     elem.sendKeys(ENTER);
     elem = this.driver.switchTo().activeElement(); //input password
     elem.sendKeys(password);
-    elem.sendKeys(ENTER);
+    elem.sendKeys(ENTER); //zapisujemy uzytkownika
 }
 
 utcPage.prototype.checkIfUserExist = function(usernameToCheck) {
   this.stop = false;
-  this.waitToElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr/td/div/div/div/a/table/tbody/tr/td[4]/div'));
+  this.waitToElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr/td/div/div/div/a/table/tbody/tr/td[4]/div')); // czekamy na liste uzytkownikow
   this.driver.sleep(100);
-  this.driver.findElements(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr/td/div/div/div/a/table/tbody/tr/td[4]/div'))
+  this.driver.findElements(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr/td/div/div/div/a/table/tbody/tr/td[4]/div')) // pobieramy liste uzytkownikow
   .then(function(userList){
     userList.forEach(function(username){
-      username.getText().then(function(name){
+      username.getText().then(function(name){ //sprawdzamy czy w danej liscie uzytkownikow znajduje sie szukany uzytkownik
           if(name===usernameToCheck) {
-            this.stop = true;
+            this.stop = true; // jesli tak ustawiamy flage stop na true
           }
         }.bind(this))
       }.bind(this))
-      if(this.stop===false){
+      if(this.stop===false){ // sprawdzamy czy flaga stop rowna sie false, jesli tak przesuwamy sie o jednego uzytkownika w dol i ponownie odpalamy nasza funkcje
         var elem;
         elem = this.driver.switchTo().activeElement();
         this.driver.sleep(100);
@@ -240,12 +240,12 @@ utcPage.prototype.checkIfUserExist = function(usernameToCheck) {
         return this.checkIfUserExist(usernameToCheck);
       }
       else {
-        console.log('Found user: ' + usernameToCheck);
+        console.log('Found user: ' + usernameToCheck); // jesli nie wypisujemy nazwe uzytkownika w konsoli i wychodzimy z funkcji
       }
     }.bind(this))
 }
 
-utcPage.prototype.showUserDetails = function(usernameToCheck) {
+utcPage.prototype.showUserDetails = function(usernameToCheck) { // funkcja analogiczna do checkIfUserExist tylko w momencie gdy uzytkownik zostaje znaleziony klikamy na niego
   this.stop = false;
   this.waitToElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr/td/div/div/div/a/table/tbody/tr/td[4]/div'));
   this.driver.sleep(100);
@@ -255,7 +255,7 @@ utcPage.prototype.showUserDetails = function(usernameToCheck) {
       username.getText().then(function(name){
           if(name===usernameToCheck) {
             //username.click();
-            this.elementToClick = username;
+            this.elementToClick = username; // zapisujemy znaleziony element
             this.stop = true;
           }
         }.bind(this))
@@ -272,14 +272,14 @@ utcPage.prototype.showUserDetails = function(usernameToCheck) {
         elem = this.driver.switchTo().activeElement();
         this.driver.sleep(100);
         elem.sendKeys(TAB);
-        this.driver.sleep(500);
+        this.driver.sleep(500); // przed kliknieciem w element schodzimy o jednego uzytkownika w dol, poniewaz niektore przegladarki nie akceptuja klikania w elementu ktore nie sa widoczne, a wystepuja w strukturze html
         this.elementToClick.click();
         console.log('Found user: ' + usernameToCheck);
       }
     }.bind(this))
 }
 
-utcPage.prototype.findAndGoToJobFunc = function(jobNameToFind) {
+utcPage.prototype.findAndGoToJobFunc = function(jobNameToFind) { //analogiczna funkcja jak showUserDetails tylko ze dla Job Function, rozni sie identyfikacja elementow
   this.stop = false;
   this.waitToElement(webdriver.By.xpath('//*[@id="app"]/section/div/div/div/section/div/section/section/table/tbody/tr/td/div/div/div/a/table/tbody/tr/td[1]/div'));
   this.driver.sleep(100);
@@ -313,21 +313,21 @@ utcPage.prototype.findAndGoToJobFunc = function(jobNameToFind) {
     }.bind(this))
 }
 
-utcPage.prototype.chooseJobFunction = function(number){
+utcPage.prototype.chooseJobFunction = function(number){// funkcja ktora za pomoca klawiatury wybiera dane funkcje
     this.clickKey(number, TAB);
     this.clickKey(1, SPACE);
 }
 
-utcPage.prototype.clickKey = function(numberOfTimes, key) {
+utcPage.prototype.clickKey = function(numberOfTimes, key) { // funkcja ktora umozliwia wielokrotne wcisniecie przycisku, za jej pomoca mozemy na przyklad przejsc przez cala strone samym TABem
   var i=0, elem;
     while(i<numberOfTimes){
-      elem = this.driver.switchTo().activeElement();
-      elem.sendKeys(key);
+      elem = this.driver.switchTo().activeElement(); //pobieramy aktualnie sfocusowany element
+      elem.sendKeys(key); //wysylamy z tego elemntu klawisz
       i++;
     }
 }
 
-utcPage.prototype.checkLocalStorage = function(key) {
+utcPage.prototype.checkLocalStorage = function(key) { //funkcja ktora sprawdza zawartosc w localStorage elementu o podanym kluczu
     var d = webdriver.promise.defer();
     var temp = String("return window.localStorage.getItem('" + key + "');"); //wywolujemy skrypt js, by pobral do zmiennej wartosc z localStorage
     this.driver.executeScript(temp).then(function(return_value) {
@@ -336,20 +336,20 @@ utcPage.prototype.checkLocalStorage = function(key) {
     return d.promise;
 };
 
-utcPage.prototype.checkFocusElement = function(elemToCheck) {
+utcPage.prototype.checkFocusElement = function(elemToCheck) { //funkcja sprawdzajaca czy sfocusowany element posiada odpowiedni ID, prosciej mowiac czy jest sfocusowany odpowiedni element na stronie
   var focusID;
   this.driver.findElement(elemToCheck).getAttribute('id').then(function(id){
-    focusID = id;
+    focusID = id; // na poczatku pobieramy ID elementu, ktory ma byc sfocusowany
   })
   var d = webdriver.promise.defer();
-  this.driver.switchTo().activeElement().getAttribute('id').then(function(element){
-    assert.equal(element, focusID)
+  this.driver.switchTo().activeElement().getAttribute('id').then(function(element){ //nastepnie pobieramy ID elementu ktory jest sfocusowany
+    assert.equal(element, focusID)//sprawdzamy czy wartosci sie zgadzaja
     d.fulfill(element);
   })
   return d.promise;
 }
 
-utcPage.prototype.fillForm = function(login, password, IDInformator, IDJezyk) {
+utcPage.prototype.fillForm = function(login, password, IDInformator, IDJezyk) {//funkcja ktora wypelnia strone logowania danymi, ktore podamy, Informator i Jezyk podajemy liczbe
     this.setText(this.loginInput, login);
     this.setText(this.passwordInput, password);
     this.chooseInformator(IDInformator); //UX USERS TEST 12, PLATFORM 11
@@ -370,9 +370,6 @@ utcPage.prototype.listSize = function(elements) {
         return webdriver.promise.fulfilled(elems.length);
   });
 };
-
-
-
 
 utcPage.prototype.isElement = function(element) {
   this.driver.findElement(element).then(function(webElement) {
@@ -437,16 +434,16 @@ utcPage.prototype.getUserData = function(path){
     return userdata.getText();
 };
 
-utcPage.prototype.cleanUsername = function() {
+utcPage.prototype.cleanUsername = function() { //funkcja ktora czysci input login na stronie glownej
   this.clickIn(this.loginInput);
   this.clickIn(this.spanUsername);
 }
 
-utcPage.prototype.cleanPassword = function() {
+utcPage.prototype.cleanPassword = function() { //funkcja ktora czysci input password na stronie glownej
   this.clickIn(this.passwordInput);
   this.clickIn(this.spanPassword);
 }
-utcPage.prototype.cleanTextPlace = function(place, clearIcon) {
+utcPage.prototype.cleanTextPlace = function(place, clearIcon) { //funkcja ktora czysci podany input, trzeba podac w co musi kliknac zeby wyczyscic input, zmienna clearIcon
   this.clickIn(place);
   this.clickIn(clearIcon);
 }
