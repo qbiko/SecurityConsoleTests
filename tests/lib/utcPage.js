@@ -230,7 +230,7 @@ utcPage.prototype.checkIfUserExist = function(usernameToCheck) {
           if(name===usernameToCheck) {
             this.stop = true; // jesli tak ustawiamy flage stop na true
           }
-        }.bind(this))
+        }.bind(this))//dobindowujemy obiekt this by byl widoczny w danym bloku
       }.bind(this))
       if(this.stop===false){ // sprawdzamy czy flaga stop rowna sie false, jesli tak przesuwamy sie o jednego uzytkownika w dol i ponownie odpalamy nasza funkcje
         var elem;
