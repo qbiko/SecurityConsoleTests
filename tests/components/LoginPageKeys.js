@@ -5,6 +5,7 @@ var utcPage = require('../lib/utcPage.js');
 var expect = require('chai').expect;
 var driver;
 
+//https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys.ENTER
 const TimeOut = 30000; //ms
 const ENTER = '\ue007';
 const TAB = '\ue004';
@@ -14,7 +15,15 @@ const UP = '\ue013';
 const DOWN = '\ue015';
 
 var userInfo = [String("Kuba" + Math.floor((Math.random() * 100000) + 1)), String("przecinak" + Math.floor((Math.random() * 100000) + 1)), "Haselko"];
-//https://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.keys.html#selenium.webdriver.common.keys.Keys.ENTER
+
+//Accessibility - obsluga tylko za pomoca klawiatury nastepujacych zadan
+//Zalogowanie, jako uzytkownik (zmiana jezyka i directory)
+//Dodanie nowego uzytkownika w UMM>Users(tylko wymagane pola)
+//Znalenienie uzytkownika na liscie
+//Zamkniecie detali uzytkownika
+//Zawieszenie uzytkownika('disable')
+//Przejscie na strone Job Functions i do dowolnej Job Function dodac kilka Permissions(System)
+//log out
 
 test.before(function() {
     this.timeout(TimeOut);
@@ -41,9 +50,9 @@ test.beforeEach(function() {
   page.waitToElement(page.loginInput);
 });
 
-test.describe('Accessibility - only keyboard', function(){
+test.describe('Accessibility - tylko klawiatura', function(){
   this.timeout(TimeOut);
-    test.it('Log in', function(){
+    test.it('Zalogowanie', function(){
         this.timeout(TimeOut);
         var page = new utcPage(driver);
         page.visit();
@@ -59,7 +68,7 @@ test.describe('Accessibility - only keyboard', function(){
           assert.equal(loginUrl, url, 'Niepoprawny adres po zalogowaniu');
         });
     })
-    test.it('Add new user', function(){
+    test.it('Dodanie nowego uzytkownika', function(){
         this.timeout(TimeOut);
         var page = new utcPage(driver);
         page.visit();
@@ -76,7 +85,7 @@ test.describe('Accessibility - only keyboard', function(){
 
         page.waitToElement(page.successButton);
     })
-    test.it('Check if user is on the list', function(){
+    test.it('Sprawdzenie czy uzytkownik jestna liscie', function(){
         this.timeout(300000);
         var page = new utcPage(driver);
         page.visit();
@@ -95,11 +104,10 @@ test.describe('Accessibility - only keyboard', function(){
         page.checkIfUserExist(userInfo[1]);
       });
 
-      test.it('Show details, change username and close user details', function(){
+      test.it('Pokazanie detali, zmiana username i zamkeniecie detali', function(){
           this.timeout(300000);
           var page = new utcPage(driver);
           page.visit();
-          //var elem;
 
           page.waitToElement(page.loginInput);
           page.waitToElement(page.informatorSelect);
@@ -144,7 +152,7 @@ test.describe('Accessibility - only keyboard', function(){
 
       })
 
-    test.it('Set disabled user', function(){
+    test.it('Ustawienie disbale danego uzytkownikowi', function(){
         this.timeout(300000);
         var page = new utcPage(driver);
         page.visit();
@@ -195,7 +203,7 @@ test.describe('Accessibility - only keyboard', function(){
 
 
     })
-    test.it('Go to Job Functions and add several Permissions to any Job Function', function(){
+    test.it('Przejscie na strone Job Functions i do dowolnej Job Function dodac kilka Permissions(System)', function(){
         this.timeout(300000);
         var page = new utcPage(driver);
         page.visit();

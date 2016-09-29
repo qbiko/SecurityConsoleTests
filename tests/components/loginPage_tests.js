@@ -7,6 +7,8 @@ var driver;
 
 const TimeOut = 30000; //ms
 
+//test strony logowania
+
 test.before(function() {
     this.timeout(TimeOut);
     var args = process.argv.slice(2);
