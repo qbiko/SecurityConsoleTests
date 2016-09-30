@@ -21,8 +21,9 @@ test.before(function(){
     if(browser=='ie') browser = 'internet explorer';
     driver = new webdriver.Builder()
     .forBrowser(browser)
-    .usingServer('http://10.0.100.79:4444/wd/hub/')
+    //.usingServer('http://10.0.100.79:4444/wd/hub/')
     .build();
+    driver.manage().window().maximize();
     page = new utcPage(driver);
     page.visit();
     page.waitToElement(webdriver.By.id('app'));

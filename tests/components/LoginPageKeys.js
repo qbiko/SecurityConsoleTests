@@ -26,6 +26,7 @@ test.before(function() {
     .forBrowser(browser)
     //.usingServer('http://10.0.100.79:4444/wd/hub/')
     .build();
+    driver.manage().window().maximize();
 });
 
 test.beforeEach(function() {

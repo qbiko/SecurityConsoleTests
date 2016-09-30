@@ -1,6 +1,7 @@
 var assert = require('assert');
 var webdriver = require('selenium-webdriver');
 var test = require('selenium-webdriver/testing');
+var Capabilities = require('selenium-webdriver/lib/capabilities').Capabilities;
 var utcPage = require('../lib/utcPage.js');
 var expect = require('chai').expect;
 var driver;
@@ -17,6 +18,8 @@ test.before(function() {
     .forBrowser(browser)
     //.usingServer('http://10.0.100.79:4444/wd/hub/')
     .build();
+    
+    driver.manage().window().maximize();
     var page = new utcPage(driver);
     this.timeout(TimeOut);
     page.visit();

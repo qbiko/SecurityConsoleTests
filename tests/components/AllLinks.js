@@ -1,11 +1,12 @@
 var assert = require('assert'),
 test = require('selenium-webdriver/testing'),
 webdriver = require('selenium-webdriver');
-
 var utcPage = require('../lib/utcPage.js');
 var expect = require('chai').expect;
 var driver;
 var page;
+
+
 
 const TAB = '\ue004';
 const CTRL = '\ue009';
@@ -27,6 +28,7 @@ test.before(function(){
     driver.sleep(1000);
     page = new utcPage(driver);
     driver.sleep(1000);
+    driver.manage().window().maximize();
     page.visit();
     driver.sleep(1000);
     page.waitToElement(webdriver.By.id('app'));
