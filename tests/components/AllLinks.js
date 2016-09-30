@@ -15,6 +15,16 @@ const DOWN = '\ue015';
 const ENTER = '\ue007';
 var Timeout = 30000;
 
+//Sprawdzenie czy na stronie wszystkie obiekty danego typu, zawieraja dany atrybut
+//Sprawdzamy tutaj strone logwania, console(tu gdzie sa wszystkie zadladki np: User Managment)
+//oraz sprawdzamy takze User Managment, a w nim:
+// -navbar
+// -Pierwszy zaladowany widok listy uzytkownikow
+// -Zakladki w rozwinietym accordionie: Profile oraz Directory Accounts.
+//*W celu sprawdzenia kolejnych zakladek z accordiona, wystarczy znalezc xpath, po kliknieciu ktorego rozwinie sie dana zakladka,
+// kilknac go i zaczekac na zaladowanie calej zawartosci
+// nastepnie, gdy zaladowany kod HTML bedzie widoczny, mozna wywolac funkcje findAllElementsAndCheck
+
 test.before(function(){
     this.timeout(Timeout);
     var args = process.argv.slice(2);
@@ -40,50 +50,51 @@ test.before(function(){
     });
     page.waitToElement(webdriver.By.id('app'));
 });
-test.describe('Find all objects and check attribute', function(){
-    var elementHTML = '//a'; //element to find
-    var attribute = 'title'; //attribute to find
-    var username = 'marcin';
-    var password = 'changeme';
 
-        //find all links in login page and verify the title attribute
+test.describe('Find all objects and check attribute', function(){
+    var elementHTML = '//a'; // zawiera dany szukany obiekt
+    var attribute = 'title'; //atrybut, ktory sprawdzamy, czy istnieje
+    var username = 'marcin'; //nazwa uzytkownika do zalogowania
+    var password = 'changeme'; //haslo
+
+        //znajduje wszystkie linki na stronie logowania i sprawdza atr. title
         test.it('in log-in page', function(){
             this.timeout(Timeout)
             page.findAllElementsAndCheck(elementHTML, attribute);
         });
 
-        //Blok after login. Check all links in console
+        //Blok, w ktorym sprawdzamy elementy po zalogowaniu
         test.describe('After login', function(){
             this.timeout(Timeout)
-            //login
+
+            //logowanie
             test.before(function(){
                 page.waitToElement(page.loginInput);
                 page.logIn(username, password , 11, 16);
                 page.waitToElement(page.userManagement);
             });
 
-            //console page
+            //sprawdzamy console page
             test.it('in console page', function(){
                 this.timeout(Timeout);
                 page.findAllElementsAndCheck(elementHTML, attribute);
             });
 
-            //go to UMM bookmark
+            //przejscie do UMM 
            test.before(function(){
                 page.clickIn(page.userManagement);
                 page.waitToElement(page.navbarHeader);
 
             });
 
-            //UMM(search in navbar, first view of users list, accordion)
+            //UMM(przeszukuje navbar, pierwszy widok listy uzytkonikow oraz accordiona) 
             test.it('in UMM page, Users bookmark, with first view of users list(not all list from database) and accordion', function(){
                 this.timeout(Timeout);
 
-                //open accordion
+                //otwieram accordion
                 page.waitToElement(page.admin);
                 page.clickIn(page.admin);
                 page.waitToElement(page.container);
-                //wait to dropdown elements
                 page.waitToElement(page.actionDropdown);
                 page.clickIn(page.actionDropdown);
 
@@ -91,10 +102,11 @@ test.describe('Find all objects and check attribute', function(){
 
             });
 
+            //testy accordiona po zaladowaniu kodu po klikniecu assign button w danej zakladce
             test.it('in UMM page, in accordions Directory Accounts after click assign button', function(){
                 this.timeout(Timeout);
                 page.refresh();
-                //open accordion and open assign popup
+                //otwieram accordion i assign popup
                 page.waitToElement(page.admin);
                 page.clickIn(page.admin);
                 page.waitToElement(page.userLastName);
@@ -112,20 +124,20 @@ test.describe('Find all objects and check attribute', function(){
                 elem = driver.switchTo().activeElement();
                 elem.sendKeys(ENTER);
 
-                //page.waitToElement(page.panelExpanded2); //wait to expanded
-                page.waitToElement(page.accordionDirectoryAccountsBtn); //wait to assign button
-                page.clickIn(page.accordionDirectoryAccountsBtn); // click assign button
-                page.waitToElement(page.assignmentPanelContent); //wait to panel content;
+                //page.waitToElement(page.panelExpanded2); //czekanie na expanded
+                page.waitToElement(page.accordionDirectoryAccountsBtn); //czekanie na assign button
+                page.clickIn(page.accordionDirectoryAccountsBtn); //klik assign button
+                page.waitToElement(page.assignmentPanelContent); //czekanie na panel content;
                 //page.clickAssignInAccordionBookmark(page.admin, p[age.accordionDirectoryAccounts, page.panelExpanded2, page.accordionDirectoryAccountsBtn, page.assignmentPanelContent)
                 page.findAllElementsAndCheck(elementHTML, attribute);
 
             });
-
+             //testy accordiona po zaladowaniu kodu po klikniecu assign button w danej zakladce
             test.it('in UMM page, in accordions Assign Groups after click assign button', function(){
                 this.timeout(Timeout);
                 page.refresh();
 
-                //open accordion and open assign popup
+                //otwieram accordion i assign popup
                 page.waitToElement(page.admin);
                 page.clickIn(page.admin);
                 page.waitToElement(page.userLastName);
@@ -148,10 +160,10 @@ test.describe('Find all objects and check attribute', function(){
                 elem = driver.switchTo().activeElement();
                 elem.sendKeys(ENTER);
 
-                //page.waitToElement(page.panelExpanded2); //wait to expanded
-                page.waitToElement(page.accordionUserGroupsAssignBtn); //wait to assign button
-                page.clickIn(page.accordionUserGroupsAssignBtn); // click assign button
-                page.waitToElement(page.assignmentPanelContent); //wait to panel content;
+                //page.waitToElement(page.panelExpanded2); //czekam na expanded
+                page.waitToElement(page.accordionUserGroupsAssignBtn); //czekam na assign button
+                page.clickIn(page.accordionUserGroupsAssignBtn); // klik w assign button
+                page.waitToElement(page.assignmentPanelContent); //czekam na panel content;
                 //page.clickAssignInAccordionBookmark(page.admin, accordionUserGroups, page.panelExpanded2, page.accordionUserGroupsAssignBtn, page.assignmentPanelContent)
                 page.findAllElementsAndCheck(elementHTML, attribute);
 

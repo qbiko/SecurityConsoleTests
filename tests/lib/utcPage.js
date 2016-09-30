@@ -8,6 +8,19 @@ const ARROW_DOWN = '\ue015';
 const SPACE = '\ue00d';
 
 function utcPage(driver) {
+
+    //wiekszosc zmiennych z ktorych korzystamy podczas testow
+    //w wiekszosci przypadkow, gdy w tescie wystepuje timeout/NoSuchElement lub podobne, najprawdopodobniej:
+    // -dany xpath elementu zostal na stronie zmieniony
+    // -element nie zostal zaladowany i jest niewidoczny
+    // -wystepuja roznice miedzy przegladarkami i w jednej element jest klikalny, a w drugiej nie
+
+    //jak najszybciej znalezc xpath do danego elementu?
+    //najlepszym i najszybszym sposobem jest uzycie przegladarki chrome
+    //klikniecie na element ktory nas interesuje prawym przyciskiem i wybranie inspect
+    //w kodzie ten element zostanie podswietlony. Klikamy prawym, wybieramy Copy>Copy as Xpath
+    //UWAGA: Sa roznice, niektore elementy nie sa klikalne dla roznych przegladarek
+
     this.driver = driver;
     this.url = 'http://10.0.100.171:8082';
     this.urlToCheck = String(this.url + '/#/');
@@ -355,7 +368,7 @@ utcPage.prototype.fillForm = function(login, password, IDInformator, IDJezyk) {/
     this.chooseInformator(IDInformator); //UX USERS TEST 12, PLATFORM 11
     this.chooseLanguage(IDJezyk); //PL 16 ENG 2
 }
-
+//zwraca tytul strony
 utcPage.prototype.titlePage = function() {
     var d = webdriver.promise.defer();
     this.driver.getTitle().then(function(title) {
@@ -457,19 +470,19 @@ utcPage.prototype.MoveToActiveAddBtn = function(){
     this.driver.sleep(1000);
 }
 
-//funtion to verify all visible elements (check if attribute is present in each elements)
+//funkcja do sprawdzenia wszystkich widocznych elemetow w kodzie i sprawdzenie czy dany atrybut jest obecny w kazdym znalezionym obiekcie
 utcPage.prototype.findAllElementsAndCheck = function(elementHTML, attribute){
     this.driver.findElements(webdriver.By.xpath(elementHTML)).then(function(elements){
         elements.forEach(function (element) {
             element.getAttribute(attribute).then(function(text){
-                //console.log(text) //if empty space in line, this title is empty
-                expect(text).to.have.length.above(0); //if texts  attribute length has 0, test faild
+                //console.log(text) //jezeli w danym miejscu bedzie pusto, znaczy ze nie wystepuje dany atrubut
+                expect(text).to.have.length.above(0); //jezeli dlugosc atrybutu wynosi 0, test nie powiedzie sie
             });
         });
     });
 }
 
-//function to choose user in users list, and click assign btn in selected bookmark in accordion and wait to panelContent
+//funkcja wybiera usera z listy i klika assign btn w wybranej zakladce w accoriodnie i czeka na zaladowanie elementow
 utcPage.prototype.clickAssignInAccordionBookmark = function(userToClick, whichBookmarkDiv, expand, elementBtn, panelContent){
 
     this.waitToElement(userToClick);
@@ -481,11 +494,11 @@ utcPage.prototype.clickAssignInAccordionBookmark = function(userToClick, whichBo
     this.clickIn(elementBtn); // click assign button
     this.waitToElement(panelContent); //wait to panel content;
 }
-
+//odswieza strone na ktorej sie aktualnie znadujemy
 utcPage.prototype.refresh = function(){
     this.driver.navigate().refresh();
 }
-
+//funkcja do wstawiania jakiegos tekstu/zmiennej do stringa z argumentu str. Jest to wstawiane w miejsce %s
 utcPage.prototype.parse = function(str) {
     var args = [].slice.call(arguments, 1),
         i = 0;
